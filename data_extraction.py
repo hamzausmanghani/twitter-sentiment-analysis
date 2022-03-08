@@ -1,31 +1,38 @@
-
-import tweepy as tw
-
-
-my_api_key = "IJHXvVKglhWypDgq12mQWm2lp"
-my_api_secret = "bCbMpB0GNBvYHrUqUuowCW85yXLr9e9QFxPBRkOdVIEdbMFSIm"
-# authenticate
-auth = tw.OAuthHandler(my_api_key, my_api_secret)
-api = tw.API(auth, wait_on_rate_limit=True)
-
-print(api.search_tweets)
-
-# search_query = "#covid19 -filter:retweets"
-#
-# tweets = tw.Cursor(api.search_tweets,
-#               q=search_query,
-#               lang="en",
-#               since="2020-09-16").items(50)
-# tweets_copy = []
-# for tweet in tweets:
-#     tweets_copy.append(tweet)
+import json
+import pandas as pd
+from utils import *
+import requests
 
 
-# print("Total Tweets fetched:", len(tweets_copy))
+def get_tweet(search_query, fields, max_results, next, bearer_token=BEARER_TOKEN):
+    headers = {"Authorization": f"Bearer {bearer_token}"}
+    url = f"https://api.twitter.com/2/tweets/search/recent?" \
+          f"query={search_query}&max_results={max_results}&tweet.fields={fields}"
+    if next is not None:
+        url += f"&next_token={next}"
+    response = requests.request("GET", url, headers=headers)
+    if response.status_code != 200:
+        raise Exception(response.status_code, response.text)
+    return response.json()
 
-# the screen_name of the targeted user
-screen_name = "geeksforgeeks"
 
-# printing the latest 20 followers of the user
-for follower in api.get_followers(screen_name):
-    print(follower.screen_name)
+search_query = "cryptocurrency"
+tweet_fields = "text,author_id,created_at,lang"
+data = []
+next = None
+count = 0
+
+while(True):
+    count += 1
+    print(count)
+    response = get_tweet(search_query, tweet_fields, 100, next, bearer_token=BEARER_TOKEN)
+    data.extend(response.get("data", []))
+    next = response.get("meta").get("next_token", None)
+    if (next is None) or (count > 200):
+        break
+
+df = pd.DataFrame(data)
+df.to_csv("samplev3.csv", index=False)
+
+
+
