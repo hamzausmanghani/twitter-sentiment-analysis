@@ -2,6 +2,7 @@ import json
 import pandas as pd
 from utils import *
 import requests
+from models import *
 
 
 def get_tweet(search_query, fields, max_results, next, bearer_token=BEARER_TOKEN):
@@ -16,23 +17,33 @@ def get_tweet(search_query, fields, max_results, next, bearer_token=BEARER_TOKEN
     return response.json()
 
 
-search_query = "cryptocurrency"
-tweet_fields = "text,author_id,created_at,lang"
-data = []
-next = None
-count = 0
+def fetch():
+    data = []
+    next = None
+    count = 0
+    while True:
+        count += 1
+        print(count)
+        response = get_tweet(search_query, tweet_fields, tweets_per_query, next, bearer_token=BEARER_TOKEN)
+        data.extend(response.get("data", []))
+        next = response.get("meta").get("next_token", None)
+        if (next is None) or (count >= total_queries):
+            break
+    df = pd.DataFrame(data)
+    # df.drop(columns=["withheld"], inplace=True)
+    return df
 
-while(True):
-    count += 1
-    print(count)
-    response = get_tweet(search_query, tweet_fields, 100, next, bearer_token=BEARER_TOKEN)
-    data.extend(response.get("data", []))
-    next = response.get("meta").get("next_token", None)
-    if (next is None) or (count > 200):
-        break
 
-df = pd.DataFrame(data)
-df.to_csv("samplev3.csv", index=False)
+# df = fetch()
+# df.to_csv("data.csv", index=False)
+
+df = pd.read_csv("data.csv")
+engine = connect_db()
+tweets_detail.__table__.create(bind=engine, checkfirst=True)
+insert_df(engine, "tweets_detail", df)
+
+
+
 
 
 
