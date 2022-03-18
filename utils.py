@@ -12,3 +12,6 @@ DB_PASS = "admin*789"
 DB_HOST = "localhost"
 DB_PORT = 5432
 DB_NAME = "tweets"
+
+API_HOST = "0.0.0.0"
+API_PORT = "30000"

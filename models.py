@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, BigInteger, String, Sequence, Float,PrimaryKeyConstraint, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, BigInteger, String, Sequence, Float, PrimaryKeyConstraint, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
@@ -14,10 +14,6 @@ def connect_db():
     return engine
 
 
-def insert_df(engine, table, df):
-    df.to_sql(table, con=engine, if_exists='append', index=False, method='multi')
-
-
 class tweets_detail(Base):
     __tablename__ = "tweets_detail"
     id = Column(String, primary_key=True)
@@ -25,3 +21,8 @@ class tweets_detail(Base):
     text = Column(String)
     lang = Column(String)
     created_at = Column(String)
+
+
+def insert_df(engine, table, df):
+    df.to_sql(table, con=engine, if_exists='append', index=False, method='multi')
+
