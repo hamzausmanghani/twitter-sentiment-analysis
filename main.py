@@ -1,9 +1,5 @@
 from process import *
 
-
-engine = connect_db()
-injest_data()
-
-print(pd.read_sql_table('tweets_detail', engine))
-
-
+if __name__ == "main":
+    engine = connect_db()
+    injest_data(engine)
