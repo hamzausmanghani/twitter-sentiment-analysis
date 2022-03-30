@@ -26,7 +26,7 @@ class AlchemyEncoder(json.JSONEncoder):
 
 
 def connect_db():
-    url = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    url = f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     if not database_exists(url):
         create_database(url)
     engine = create_engine(url, pool_size=50)
