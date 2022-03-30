@@ -10,8 +10,7 @@ total_queries = 10
 DB_USER = "postgres"
 DB_PASS = "admin*789"
 DB_HOST = "localhost"
-# DB_PORT = 5432
-DB_PORT = 113
+DB_PORT = 5432
 DB_NAME = "tweets"
 
 API_HOST = "0.0.0.0"
