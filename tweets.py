@@ -21,7 +21,6 @@ def fetch():
     count = 0
     while True:
         count += 1
-        print(count)
         response = get_tweet(search_query, tweet_fields, tweets_per_query, next, bearer_token=BEARER_TOKEN)
         data.extend(response.get("data", []))
         next = response.get("meta").get("next_token", None)
