@@ -33,5 +33,5 @@ def get_tweets_by_tag(tag, fileName="tag_search"):
 
 if __name__ == '__main__':
     get_all_tweets(fileName="all_tweets")
-    get_tweets_by_tag(tag= "bitcoin", fileName="bitcoin_tweets")
+    get_tweets_by_tag(tag="bitcoin", fileName="bitcoin_tweets")
 
