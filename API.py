@@ -1,8 +1,6 @@
 import flask
 from flask import request, jsonify
 from models import *
-import pandas as pd
-import json
 
 app = flask.Flask(__name__)
 app.config['debug'] = True
@@ -23,7 +21,10 @@ def get_tweets():
             result = session.query(tweets_detail).filter(
                      tweets_detail.created_at.between(start, end)
             ).all()
-            return json.dumps(result, cls=AlchemyEncoder)
+            result = [r.as_dict() for r in result]
+            response = jsonify({'status': "SUCCESSFUL",
+                                'data': result})
+            return response
         else:
             return {"status": "UNAUTHORIZED"}, 401
     else:
