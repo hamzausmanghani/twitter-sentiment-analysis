@@ -46,9 +46,9 @@ def search_by():
             result = session.query(tweets_detail).filter(
                 and_(tweets_detail.text.ilike(f'%{tag}%'),
                      tweets_detail.created_at.between(start, end))
-            ).all()
+            ).all().as_dict()
             response = jsonify({'status': "SUCCESSFUL",
-                                'data': result.serialize()})
+                                'data': result)
             return response
         else:
             return {"status": "BAD REQUEST"}, 400
