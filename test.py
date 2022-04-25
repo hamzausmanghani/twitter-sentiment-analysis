@@ -21,7 +21,7 @@ def get_all_tweets(fileName="tweets"):
                        params={"start": start, "end": end})
     if rsp.status_code == 200:
         df = pd.DataFrame(json.loads(rsp.content))
-        df.to_csv(f"{fileName}.csv", index=False)
+        df.to_csv(f"{fileName}-{start}-{end}.csv", index=False)
         if verbose: print(f"Data fetched and stored in file named '{fileName}'")
     else:
         if verbose: print(f"Error in fetching data: status <{rsp.status_code}>")
@@ -33,7 +33,7 @@ def get_tweets_by_tag(tag, fileName="tag_search"):
                        params={"tag": tag, "start": start, "end": end})
     if rsp.status_code == 200:
         df = pd.DataFrame(json.loads(rsp.content))
-        df.to_csv(f"{fileName}.csv", index=False)
+        df.to_csv(f"{fileName}-{tag}-{start}-{end}.csv", index=False)
         if verbose: print(f"Data fetched and stored in file named '{fileName}'")
     else:
         if verbose: print(f"Error in fetching data: status <{rsp.status_code}>")
