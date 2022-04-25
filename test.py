@@ -11,8 +11,8 @@ verbose = True
 
 # serach filters
 tag = "bitcoin"
-start = "2022-03-21"
-end = "2022-03-30"
+start = "2022-03-30"
+end = "2022-03-31"
 
 
 def get_all_tweets(fileName="tweets"):

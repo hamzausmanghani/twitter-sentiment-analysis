@@ -47,7 +47,9 @@ def search_by():
                 and_(tweets_detail.text.ilike(f'%{tag}%'),
                      tweets_detail.created_at.between(start, end))
             ).all()
-            return json.dumps(result, cls=AlchemyEncoder)
+            response = jsonify({'status': "SUCCESSFUL",
+                                'data': result.serialize()})
+            return response
         else:
             return {"status": "BAD REQUEST"}, 400
     else:

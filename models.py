@@ -41,6 +41,13 @@ class tweets_detail(Base):
     lang = Column(String)
     created_at = Column(DateTime)
 
+    def serialize(self):
+        return {"id": self.id,
+                "author_id": self.author_id,
+                "text": self.text,
+                "lang": self.lang,
+                "created_at": self.created_at}
+
 
 def insert_df(engine, table, df):
     df.to_sql(table, con=engine, if_exists='append', index=False, method='multi')
