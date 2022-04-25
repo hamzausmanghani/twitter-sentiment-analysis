@@ -48,7 +48,7 @@ def search_by():
                      tweets_detail.created_at.between(start, end))
             ).all().as_dict()
             response = jsonify({'status': "SUCCESSFUL",
-                                'data': result)
+                                'data': result})
             return response
         else:
             return {"status": "BAD REQUEST"}, 400
